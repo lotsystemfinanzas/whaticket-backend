@@ -1,6 +1,11 @@
-.git
-*Dockerfile*
-*docker-compose*
 node_modules
-dist
-.wwebjs_auth
+npm-debug.log
+Dockerfile*
+.dockerignore
+.git
+.gitignore
+.env.local
+dist-ssr
+.cache
+.tmp
+coverage
