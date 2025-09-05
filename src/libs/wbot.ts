@@ -43,18 +43,20 @@ export const initWbot = async (whatsapp: Whatsapp): Promise<Session> => {
         sessionCfg = JSON.parse(whatsapp.session);
       }
 
-      const args:String = process.env.CHROME_ARGS || "";
+      const argsStr: string = process.env.CHROME_ARGS || "--no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage --disable-gpu --no-zygote";
+const chromiumPath = process.env.CHROME_BIN || process.env.PUPPETEER_EXECUTABLE_PATH || process.env.CHROME_PATH || process.env.CHROMIUM_PATH || "/usr/bin/chromium";
 
-      const wbot: Session = new Client({
-        session: sessionCfg,
-        authStrategy: new LocalAuth({clientId: 'bd_'+whatsapp.id}),
-        puppeteer: {
-          executablePath: process.env.CHROME_BIN || undefined,
-          // @ts-ignore
-          browserWSEndpoint: process.env.CHROME_WS || undefined,
-          args: args.split(' ')
-        }
-      });
+const wbot: Session = new Client({
+  session: sessionCfg,
+  authStrategy: new LocalAuth({ clientId: 'bd_'+whatsapp.id }),
+  puppeteer: {
+    executablePath: chromiumPath,
+    // @ts-ignore
+    browserWSEndpoint: process.env.CHROME_WS || undefined,
+    headless: true,
+    args: argsStr.split(' ').filter(Boolean)
+  }
+});
 
       wbot.initialize();
 

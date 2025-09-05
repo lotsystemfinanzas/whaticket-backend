@@ -10,6 +10,9 @@ import "./database";
 import uploadConfig from "./config/upload";
 import AppError from "./errors/AppError";
 import routes from "./routes";
+import integrationRoutes from "./routes/integrationRoutes";
+import metaRoutes from "./routes/metaRoutes";
+import metaWebhookRoutes from "./routes/metaWebhookRoutes";
 import { logger } from "./utils/logger";
 
 Sentry.init({ dsn: process.env.SENTRY_DSN });
@@ -27,6 +30,13 @@ app.use(express.json());
 app.use(Sentry.Handlers.requestHandler());
 app.use("/public", express.static(uploadConfig.directory));
 app.use(routes);
+app.use('/integrations', integrationRoutes);
+app.use('/channels', metaRoutes);
+app.use('/meta', metaRoutes);
+app.use('/webhooks', metaWebhookRoutes);
+app.use("/channels", metaRoutes);
+app.use("/webhooks", metaWebhookRoutes);
+app.use("/meta", metaRoutes);
 
 app.use(Sentry.Handlers.errorHandler());
 

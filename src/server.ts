@@ -1,3 +1,4 @@
+import express from 'express';
 import gracefulShutdown from "http-graceful-shutdown";
 import app from "./app";
 import { initIO } from "./libs/socket";
@@ -11,3 +12,7 @@ const server = app.listen(process.env.PORT, () => {
 initIO(server);
 StartAllWhatsAppsSessions();
 gracefulShutdown(server);
+
+import integrationRoutes from './routes/integrationRoutes';
+import metaRoutes from './routes/metaRoutes';
+import metaWebhookRoutes from './routes/metaWebhookRoutes';
